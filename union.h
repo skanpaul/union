@@ -17,8 +17,6 @@
 #include <stdbool.h>
 /* ************************************************************************** */
 int		ft_strlen(char *str);
-bool	is_char_used (char c, char *memory);
-char 	*update_memory(char c, char *old_mem);
 
 /* ************************************************************************** */
 #endif

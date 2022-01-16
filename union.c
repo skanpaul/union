@@ -12,51 +12,52 @@
 #include "union.h"
 
 /* ************************************************************************** */
-static void display(char *text, char *memory);
+void reset_mem(bool *memory);
+void display_char(char *text, bool *memory);
 
 /* ************************************************************************** */
 int main(int argc, char **argv)
 {
-	char *text1;
-	char *text2;
-	char *memory;
+	bool memory[256];
+	char *text;
 
-	if ((argc == 1) || (argc > 3))
+	reset_mem(memory);
+	if (argc == 3)
 	{
-		write(1, "/n", 1);
-		return (-1);
+		text = argv[1];
+		display_char(text, memory);
+
+		text = argv[2];
+		display_char(text, memory);
 	}
-
-	text1 = argv[1];
-	text2 = argv[2];
-
-	memory = (char *)malloc(1 * sizeof(char));
-	if (!memory)
-		return (-1);
-	memory[0] = '\0';
-
-	display(text1, memory);
-	display(text2, memory);
-
 	write(1, "\n", 1);
-
-	if (memory != NULL)
-		free(memory);
-	return (0);
 }
 
 /* ************************************************************************** */
-static void display(char *text, char *memory)
+void reset_mem(bool *memory)
+{
+	int i;
+
+	i = 0;
+	while (i < 256)
+	{
+		memory[i] = false;
+		i++;
+	}
+}
+
+/* ************************************************************************** */
+void display_char(char *text, bool *memory)
 {
 	int i;
 
 	i = 0;
 	while (text[i] != '\0')
 	{
-		if (!is_char_used(text[i], memory))
+		if (memory[(unsigned char)text[i]] == false)
 		{
+			memory[(unsigned char)text[i]] = true;
 			write(1, &text[i], 1);
-			memory = update_memory(text[i], memory);
 		}
 		i++;
 	}
